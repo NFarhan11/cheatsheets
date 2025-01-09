@@ -67,9 +67,9 @@ Use `---`, `___` for long lines
 Use `\` to escape next character 
 
 ## 11. Task Lists
-Use `[ ]` for unchecked, `[x]` for checked
+Use `- [ ]` for unchecked, `- [x]` for checked
 - [x] checked 
-- [] unchecked
+- [ ] unchecked
 
 ## 12. Emojis
 Use `:emoji_names:`  
