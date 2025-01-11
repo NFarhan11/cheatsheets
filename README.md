@@ -1,6 +1,9 @@
 # CheatSheets
+
 A collection of all my cheat sheets using Markdown.
 
-# Cheatsheets Collection  
+## Cheatsheets Collection
 
 - [Markdown](markdown.md)
+- [JavaScript](java_script.md)
+- [Programming Technique](programming_technique.md)
