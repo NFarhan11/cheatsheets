@@ -1,119 +1,116 @@
 # Docker
 
-## Command
+## Basic Commands
 
-`docker pull [IMAGE]`
+|    Command     | Description                     |
+| :------------: | :------------------------------ |
+| docker version | Show Docker version             |
+|  docker info   | Display system-wide information |
+|  docker help   | Get help on a command           |
 
-- download image from cloud.
+## Container Management
 
-`docker images`
+|                  Command                   | Description               |
+| :----------------------------------------: | :------------------------ |
+|                 docker ps                  | List running containers   |
+|                docker ps -a                | List all containers       |
+|         docker start `<container>`         | Start a stopped container |
+|         docker stop `<container>`          | Stop a running container  |
+|        docker restart `<container>`        | Restart a container       |
+|          docker rm `<container>`           | Remove a container        |
+|         docker logs `<container>`          | View container logs       |
+|        docker inspect `<container>`        | View detailed information |
+|     docker exec -it `<container>` bash     | Enter a running container |
+| docker cp `<container-path>`:`<host-path>` | Copy files from container |
 
-- lists all images on system.
+## Image Management
 
-`docker rmi [IMAGE]`
+|              Command              | Description                       |
+| :-------------------------------: | :-------------------------------- |
+|           docker images           | List available images             |
+|       docker pull `<image>`       | Download an image from Docker Hub |
+|    docker build -t `<name>` .     | Build an image from a Dockerfile  |
+|       docker rmi `<image>`        | Remove an image                   |
+| docker tag `<image>` `<new-name>` | Tag an image                      |
+|       docker push `<image>`       | Push an image to a registry       |
 
-- removes image from system.
+## Run Containers
 
-`docker ps -a`
+|                           Command                            | Description                                             |
+| :----------------------------------------------------------: | :------------------------------------------------------ |
+| docker run -d -p 8080:80 --name `<container_name>` `<image>` | Run a container in detached mode                        |
+|      docker run -dt --name `<container_name>` `<image>`      | Run a container in detached mode (`t` -> stays running) |
+|                  docker run --rm `<image>`                   | Run and remove container after exit                     |
+|   docker run -v `<host-path>`:`<container-path>` `<image>`   | Mount a volume                                          |
+|              docker run -e VAR=value `<image>`               | Set environment variables                               |
+|             docker run --network=host `<image>`              | Use host network                                        |
 
-- list all ran containers.
+## Docker Volumes
 
-`docker run [IMAGE]`
+|             Command              | Description      |
+| :------------------------------: | :--------------- |
+|         docker volume ls         | List volumes     |
+| docker volume create `<volume>`  | Create a volume  |
+|   docker volume rm `<volume>`    | Remove a volume  |
+| docker volume inspect `<volume>` | Inspect a volume |
 
-- find [IMAGE], load up container, and runs cmd in that container.
+## Docker Networks
 
-`docker run -it [IMAGE] bash`
-
-- attach to container's shell (interactive tty).
-- `bash` for open shell inside container with no interactive default command.
-
-`docker run [IMAGE] --rm`
-
-- deletes a container once exited, good or one off docker runs.
-
-`docker run -d -P --name [IMAGE]`
-
-- `d` detach terminal
-- `P` publish all exposed ports
-- `name` assign name to container
-
-`docker run -p <host_port>:<container_port> [IMAGE]`
-
-- run container and map ports.
-
-`docker rm [CONTAINER]`
-
-- delete container.
-
-`docker rm $(docker ps -a -q -f status=exited)`
-
-- delete all containers that have `exited` status.
-
-`docker container prune`
-
-- deletes all exited status. (Recommended).
-
-`docker port [CONTAINER]`
-
-- lists port mappings.
-
-`docker exec [CONTAINER]`
-
-- execute commands in running container.
-
-## USUAL CMD
-
-`docker run -dt --name [container_name] [IMAGE]`
-
-- run container and detach while running.
-
-`docker exec -it [container_name] bash`
-
-- enter container shell.
-
-`docker stop [container_name]`
-
-- stop running container.
-
-`docker start [container_name]`
-
-- start existing stopped container.
-
-`docker stats`
-
-- checks resources usage.
-
-## Terminology
-
-Detached Mode
-
-- Terminal separate from container.
-
-## Build Image
-
-### Dockerfile
-
-```
-FROM [BASE_IMAGE]
-
-WORKDIR [app_directory]
-
-COPY . .
-
-RUN [DEPENDENCIES]
-
-EXPOSE [PORTS]
-
-CMD [APP_RUN_CMD]
-```
-
-`docker build -t [name:tag] [Dockerfile_location]`
-
-- build docker image from Dockerfile. Use `.` for current location
+|                       Command                       | Description                    |
+| :-------------------------------------------------: | :----------------------------- |
+|                  docker network ls                  | List networks                  |
+|          docker network create `<network>`          | Create a network               |
+|            docker network rm `<network>`            | Remove a network               |
+|         docker network inspect `<network>`          | Inspect a network              |
+|  docker network connect `<network>` `<container>`   | Connect container to a network |
+| docker network disconnect `<network>` `<container>` | Disconnect container           |
 
 ## Docker Compose
 
-- tool for define and run multi-container Docker apps easy way.
-- `docker-compose.yml` is the config file.
+|        Command         | Description                     |
+| :--------------------: | :------------------------------ |
+|  docker-compose up -d  | Start services in detached mode |
+|  docker-compose down   | Stop and remove containers      |
+|   docker-compose ps    | List running services           |
+|  docker-compose logs   | View logs                       |
+| docker-compose restart | Restart all services            |
 
-`docker-compose up -d`
+## Dockerfile Example
+
+```dockerile
+# Use base image
+FROM node:18
+
+# Set working directory
+WORKDIR /app
+
+# Copy files and install dependencies
+COPY package.json .
+RUN npm install
+
+# Copy application files
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Start application
+CMD ["node", "server.js"]
+```
+
+## Prune Unused Resources
+
+|        Command         | Description                                |
+| :--------------------: | :----------------------------------------- |
+| docker system prune -a | Remove unused containers, images, networks |
+|  docker volume prune   | Remove unused volumes                      |
+|   docker image prune   | Remove dangling images                     |
+
+## Debugging & Logs
+
+|           Command            | Description                               |
+| :--------------------------: | :---------------------------------------- |
+| docker logs -f `<container>` | Follow logs                               |
+|  docker stats `<container>`  | View real-time resource usage             |
+|   docker top `<container>`   | Show running processes inside a container |
+|        docker events         | Show real-time Docker events              |
