@@ -1,5 +1,7 @@
 # Docker
 
+### Docker Main Resource: IMAGES, CONTAINERS, VOLUMES, NETWORKS
+
 ## Basic Commands
 
 |    Command     | Description                     |
@@ -8,42 +10,92 @@
 |  docker info   | Display system-wide information |
 |  docker help   | Get help on a command           |
 
-## Container Management
+## IMAGE & CONTAINER
 
-|                  Command                   | Description               |
-| :----------------------------------------: | :------------------------ |
-|                 docker ps                  | List running containers   |
-|                docker ps -a                | List all containers       |
-|         docker start `<container>`         | Start a stopped container |
-|         docker stop `<container>`          | Stop a running container  |
-|        docker restart `<container>`        | Restart a container       |
-|          docker rm `<container>`           | Remove a container        |
-|         docker logs `<container>`          | View container logs       |
-|        docker inspect `<container>`        | View detailed information |
-|     docker exec -it `<container>` bash     | Enter a running container |
-| docker cp `<container-path>`:`<host-path>` | Copy files from container |
+- a list of `layers` forms an `image`.
+- an `image` is a blueprint for a `container`.
+- `container commit` not usually used, instead use Dockerfile.
+- a Dockerfile creates an `image`.
 
-## Image Management
+### Layers & Image Management
 
-|              Command              | Description                       |
-| :-------------------------------: | :-------------------------------- |
-|           docker images           | List available images             |
-|       docker pull `<image>`       | Download an image from Docker Hub |
-|    docker build -t `<name>` .     | Build an image from a Dockerfile  |
-|       docker rmi `<image>`        | Remove an image                   |
-| docker tag `<image>` `<new-name>` | Tag an image                      |
-|       docker push `<image>`       | Push an image to a registry       |
+|                              Command                              | Description                        |
+| :---------------------------------------------------------------: | :--------------------------------- |
+|                           docker images                           | List available images              |
+|                       docker pull `<image>`                       | Download an image from Docker Hub  |
+|                    docker build -t `<name>` .                     | Build an image from a Dockerfile   |
+|                       docker rmi `<image>`                        | Remove an image                    |
+|                 docker tag `<image>` `<new-name>`                 | Tag an image                       |
+|                       docker push `<image>`                       | Push an image to a registry        |
+| docker container commit -m "message" `<base-image>` `<new-image>` | Create new image from a container. |
+|                  docker image history `<image>`                   | Shows all layers of the image.     |
 
-## Run Containers
+### Container Management
 
 |                           Command                            | Description                                             |
 | :----------------------------------------------------------: | :------------------------------------------------------ |
+|                          docker ps                           | List running containers                                 |
+|                         docker ps -a                         | List all containers                                     |
+|                  docker start `<container>`                  | Start a stopped container                               |
+|                  docker stop `<container>`                   | Stop a running container                                |
+|                 docker restart `<container>`                 | Restart a container                                     |
+|                   docker rm `<container>`                    | Remove a container                                      |
+|                  docker logs `<container>`                   | View container logs                                     |
+|                 docker inspect `<container>`                 | View detailed information                               |
+|              docker exec -it `<container>` bash              | Enter a running container                               |
+|          docker cp `<container-path>`:`<host-path>`          | Copy files from container                               |
 | docker run -d -p 8080:80 --name `<container_name>` `<image>` | Run a container in detached mode                        |
 |      docker run -dt --name `<container_name>` `<image>`      | Run a container in detached mode (`t` -> stays running) |
 |                  docker run --rm `<image>`                   | Run and remove container after exit                     |
 |   docker run -v `<host-path>`:`<container-path>` `<image>`   | Mount a volume                                          |
 |              docker run -e VAR=value `<image>`               | Set environment variables                               |
 |             docker run --network=host `<image>`              | Use host network                                        |
+
+### Overriding Container Defaults
+
+|   Flag    | Description                                            |
+| :-------: | :----------------------------------------------------- |
+| --network | Override default network `bridge` with custom network. |
+|    -e     | Set ENV variables.                                     |
+|    -v     | Set volume.                                            |
+|  --cpus   | Specifies CPU quota for the container.                 |
+| --memory  | Specifies memory limit for the container.              |
+
+### Dockerfile Example
+
+```dockerile
+# Use base image
+FROM node:18
+
+# Set working directory
+WORKDIR /app
+
+# Copy files and install dependencies
+COPY package.json .
+RUN npm install
+
+# Copy application files
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Start application
+CMD ["node", "server.js"]
+```
+
+### Dockerfile Common Instruction
+
+|            Instruction            | Description                                                                                                                           |
+| :-------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------ |
+|          FROM `<image>`           | specifies the base image that the build will extend.                                                                                  |
+|         WORKDIR `<path>`          | this instruction specifies the "working directory" or the path in the image where files will be copied and commands will be executed. |
+| COPY `<host-path>` `<image-path>` | this instruction tells the builder to copy files from the host and put them into the container image.                                 |
+|          RUN `<command>`          | this instruction tells the builder to run the specified command.                                                                      |
+|      ENV `<name>` `<value>`       | this instruction sets an environment variable that a running container will use.                                                      |
+|      EXPOSE `<port-number>`       | this instruction sets configuration on the image that indicates a port the image would like to expose.                                |
+|       USER `<user-or-uid>`        | this instruction sets the default user for all subsequent instructions.                                                               |
+|  CMD ["`<command>`", "`<arg1>`"]  | this instruction sets the default command a container using this image will run.                                                      |
 
 ## Docker Volumes
 
@@ -67,36 +119,14 @@
 
 ## Docker Compose
 
-|        Command         | Description                     |
-| :--------------------: | :------------------------------ |
-|  docker-compose up -d  | Start services in detached mode |
-|  docker-compose down   | Stop and remove containers      |
-|   docker-compose ps    | List running services           |
-|  docker-compose logs   | View logs                       |
-| docker-compose restart | Restart all services            |
-
-## Dockerfile Example
-
-```dockerile
-# Use base image
-FROM node:18
-
-# Set working directory
-WORKDIR /app
-
-# Copy files and install dependencies
-COPY package.json .
-RUN npm install
-
-# Copy application files
-COPY . .
-
-# Expose port
-EXPOSE 3000
-
-# Start application
-CMD ["node", "server.js"]
-```
+|            Command            | Description                                  |
+| :---------------------------: | :------------------------------------------- |
+|     docker-compose up -d      | Start services in detached mode              |
+|      docker-compose down      | Stop and remove containers                   |
+| docker-compose down --volumes | Stop and remove containers including volumes |
+|       docker-compose ps       | List running services                        |
+|      docker-compose logs      | View logs                                    |
+|    docker-compose restart     | Restart all services                         |
 
 ## Prune Unused Resources
 
