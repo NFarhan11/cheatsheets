@@ -7,7 +7,8 @@ A collection of all my cheat sheets using Markdown.
 - [Markdown](markdown.md)
 - Web Dev
   - [JavaScript](java_script.md)
-  - [VueJS](vue_js.md)
+  - [Vue JS](vue_js.md)
+  - [Nuxt JS](nuxt_js.md)
 - [Programming Technique](programming_technique.md)
 - [Laravel Packages](laravel_packages.md)
 - [C Programming](c.md)
