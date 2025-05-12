@@ -119,14 +119,16 @@ CMD ["node", "server.js"]
 
 ## Docker Compose
 
-|            Command            | Description                                  |
-| :---------------------------: | :------------------------------------------- |
-|     docker-compose up -d      | Start services in detached mode              |
-|      docker-compose down      | Stop and remove containers                   |
-| docker-compose down --volumes | Stop and remove containers including volumes |
-|       docker-compose ps       | List running services                        |
-|      docker-compose logs      | View logs                                    |
-|    docker-compose restart     | Restart all services                         |
+|            Command            | Description                                                            |
+| :---------------------------: | :--------------------------------------------------------------------- |
+|     docker-compose up -d      | Start services in detached mode (**for modified config**)              |
+|      docker-compose down      | Stop and remove containers (**for modified config**)                   |
+| docker-compose down --volumes | Stop and remove containers including volumes (**for modified config**) |
+|       docker-compose ps       | List running services                                                  |
+|      docker-compose logs      | View logs                                                              |
+|    docker-compose restart     | Restart all services                                                   |
+|      docker-compose stop      | Stop all services (**for non-modified config**)                        |
+|     docker-compose start      | Restart all services (**for non-modified config**)                     |
 
 ## Prune Unused Resources
 
