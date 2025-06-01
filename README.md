@@ -14,3 +14,4 @@ A collection of all my cheat sheets using Markdown.
 - [C Programming](c.md)
 - [Docker](docker.md)
 - [WSL2](wsl2.md)
+- [Git](git.md)
